@@ -631,6 +631,16 @@ async function sendHomeCommand() {
     }
 }
 
+async function sendShutdownCommand() {
+    const response = await fetch('/send_shutdown', { method: 'POST' });
+    const result = await response.json();
+    if (result.success) {
+        logMessage('Shutting down now.', LOG_TYPE.SUCCESS);
+    } else {
+        logMessage('Failed to send SHUTDOWN command.', LOG_TYPE.ERROR);
+    }
+}
+
 async function runClearIn() {
     logMessage('Running clear from center pattern...', LOG_TYPE.INFO);
     try {
