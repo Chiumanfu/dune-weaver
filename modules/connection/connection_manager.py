@@ -4,6 +4,7 @@ import logging
 import serial
 import serial.tools.list_ports
 import websocket
+import os
 
 from modules.core.state import state
 from modules.core.pattern_manager import move_polar, reset_theta
@@ -397,6 +398,9 @@ def home():
             state.machine_y -= 22
 
     state.current_theta = state.current_rho = 0
+
+def shutdown():
+    os.system("sudo shutdown -h now")
 
 def check_idle():
     """
