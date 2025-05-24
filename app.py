@@ -294,6 +294,18 @@ async def send_home():
         logger.error(f"Failed to send home command: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/send_shutdown")
+async def send_shutdown():
+    try:
+        if not (state.conn.is_connected() if state.conn else False):
+            logger.warning("Attempted to shutdown without a connection")
+            raise HTTPException(status_code=400, detail="Connection not established")
+        connection_manager.shutdown()
+        return {"success": True}
+    except Exception as e:
+        logger.error(f"Failed to send shutdown command: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/run_theta_rho_file/{file_name}")
 async def run_specific_theta_rho_file(file_name: str):
     file_path = os.path.join(pattern_manager.THETA_RHO_DIR, file_name)
